@@ -205,15 +205,16 @@ void app_main(void)
         printf("BUTTON %d\n", button_pressed);
 
         gpio_set_level(GPIO_OUPUT_LED, button_pressed % 2);
+
         if (button_pressed % 2 == 0)
         {
-            printf("buzzzzzz\n");
+            printf("NO BUZZ\n");
             pwm_set_duties(duties_off);
             pwm_start();
         }
         else
         {
-            printf("pas buzzzzzz\n");
+            printf("BUZZ\n");
             pwm_set_duties(duties);
             pwm_start();
         }
