@@ -26,7 +26,7 @@
 #define PWM_0_OUT_IO_NUM 14
 
 // PWM period 500us(2Khz), same as depth
-#define PWM_PERIOD 500
+#define PWM_PERIOD 200
 
 // pwm pin number
 const uint32_t pin_num[] = {
@@ -218,6 +218,6 @@ void app_main(void)
             pwm_start();
         }
 
-        vTaskDelay(1000 / portTICK_RATE_MS);
+        vTaskDelay(1000 / 900);
     }
 }
