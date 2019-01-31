@@ -21,6 +21,7 @@
 
 #define GPIO_OUPUT_LED 12
 #define GPIO_OUPUT_BUZZER 14
+#define GPIO_INPUT_BUTTON 05
 
 #define PWM_0_OUT_IO_NUM 14
 
@@ -172,6 +173,13 @@ void app_main(void)
     c.pull_down_en = c.pull_up_en = 0;
     gpio_config(&c);
 
+    gpio_config_t c_output;
+    c_output.mode = GPIO_MODE_INPUT;
+    c_output.pin_bit_mask = GPIO_Pin_4;
+    c_output.intr_type = GPIO_INTR_DISABLE;
+    c_output.pull_down_en = c.pull_up_en = 0;
+    gpio_config(&c_output);
+
     int cnt = 0;
 
     pwm_init(PWM_PERIOD, duties, 1, pin_num);
@@ -188,12 +196,16 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(ret);
 
+    int button_pressed = 0;
     while (1)
     {
         printf("cnt: %d\n", cnt++);
-        gpio_set_level(GPIO_OUPUT_LED, cnt % 2);
 
-        if (cnt % 2 == 0)
+        button_pressed = gpio_get_level(GPIO_INPUT_BUTTON);
+        printf("BUTTON %d\n", button_pressed);
+
+        gpio_set_level(GPIO_OUPUT_LED, button_pressed % 2);
+        if (button_pressed % 2 == 0)
         {
             printf("buzzzzzz\n");
             pwm_set_duties(duties_off);
